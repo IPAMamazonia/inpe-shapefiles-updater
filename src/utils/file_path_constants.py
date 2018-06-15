@@ -5,6 +5,8 @@ SHAPEFILES_DOWNLOAD_PATH = ABS_PATH+'/shapeFiles/'
 
 
 def get_zip_file_path():
+    print os.listdir(
+        SHAPEFILES_DOWNLOAD_PATH)
     return SHAPEFILES_DOWNLOAD_PATH+'/'+os.listdir(
         SHAPEFILES_DOWNLOAD_PATH)[0]
 

@@ -17,7 +17,7 @@ class Bot:
     dropDown_block = [
         {'SELECTOR_ID': 'countries-export', 'OPTION': 'Brasil'},
         {'SELECTOR_ID': 'states-export', 'OPTION': 'Amazônia Legal'},
-        {'SELECTOR_ID': 'filter-satellite-export', 'OPTION': 'Refer. (AQUA_M-T)'},
+        {'SELECTOR_ID': 'filter-satellite-export', 'OPTION': 'Refer. (Aqua Tarde)'},
         {'SELECTOR_ID': 'filter-biome-export', 'OPTION': 'TODOS'},
         {'SELECTOR_ID': 'exportation-type', 'OPTION': 'Shapefile'}
         ]
@@ -37,8 +37,17 @@ class Bot:
     def routine(self):
         
         try:
-            exportar_dados_button = self.session.find_element_by_xpath('//*[@class="fa fa-download"]')
+            bt = self.session.find_element_by_xpath(
+                '//*[@class="bdqueimadas-btn vex-dialog-button vex-first vex-last"]')
+
+            exportar_dados_button = self.session.find_element_by_xpath(
+                '//*[@class="fa fa-download"]')
+
+            bt.click()
+            print bt,'oi'
+            time.sleep(2)
             exportar_dados_button.click()
+            print exportar_dados_button,'exp'
             self.click_at_the_option()
 
             export_button = self.session.find_element_by_xpath('//*[@value="Exportar"]')
@@ -59,8 +68,9 @@ class Bot:
         extract_zip(get_zip_file_path())
 
         if db.check_if_table_exists():
+            print 'table exists'
             db.drop_table()
-
+        
         call(TERMINAL_COMMAND.format(SHAPEFILES_DOWNLOAD_PATH,
                                         generate_file_name(), TABLE_NAME), shell=True)
         db.database_calculate_and_drop_table()
@@ -69,7 +79,9 @@ class Bot:
         remove_folder_and_shapeFiles() 
 
     def click_at_the_option(self, ):
+  
         for dropdown_object in self.dropDown_block:
+            print dropdown_object['OPTION'], ' ----- ',dropdown_object['SELECTOR_ID']
             selector = self.session.find_element_by_xpath(
                 '//select[@id="'+dropdown_object['SELECTOR_ID']+'"]')
             selector.click()
@@ -110,7 +122,7 @@ class Bot:
 
     def gotoPage(self):
         try:
-            self.session.get('https://prodwww-queimadas.dgi.inpe.br/bdqueimadas/')
+            self.session.get('http://www.inpe.br/queimadas/bdqueimadas')
             self.routine()
             self.session.quit()
         except:

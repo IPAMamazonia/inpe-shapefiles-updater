@@ -53,11 +53,15 @@ class DB_Model:
     def check_if_table_exists(self):
 
         self.cur.execute('''
-        SELECT COUNT(*) FROM information_schema.tables
-WHERE table_name = '{}'
+        SELECT EXISTS (
+   SELECT 1
+   FROM   information_schema.tables 
+   WHERE  table_schema = 'public'
+   AND    table_name = '{}'
+   );
 '''.format(TABLE_NAME))
-
-        exists = self.cur.fetchone()[0]
+        exists = self.cur.fetchone()[0]    
+        print exists
 
         return exists
 
