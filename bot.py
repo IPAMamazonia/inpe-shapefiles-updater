@@ -125,7 +125,8 @@ class Bot:
             self.session.get('http://www.inpe.br/queimadas/bdqueimadas')
             self.routine()
             self.session.quit()
-        except:
+        except Exception as e:
+            print(e)
             SlackBOT().send_msg('[-] Ocorreu um erro. :-1:', '#inpe')
 
 bot = Bot()
