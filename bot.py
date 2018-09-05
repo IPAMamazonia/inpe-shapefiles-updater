@@ -54,12 +54,18 @@ class Bot:
             export_button.click()
             while not os.path.exists(SHAPEFILES_DOWNLOAD_PATH):
                 time.sleep(1)
-        
+
+            # Para evitar extrair .zip que ainda não terminou de baixar
+            # Enquanto o download esta em andamento ha dois arquivos: .zip e .zip.part
+            while True:
+                if len(os.listdir(SHAPEFILES_DOWNLOAD_PATH)) == 1:
+                    break
+
             self.upload_files_to_db()
 
                                 
-        except NoSuchElementException:
-            # SlackBOT().send_msg('[-] Ocorreu um erro. :-1:', '#inpe')
+        except NoSuchElementException as e:
+            SlackBOT().send_msg('[-] Ocorreu um erro: '+str(e)+' :-1:', '#inpe')
             return False
 
     def upload_files_to_db(self):
