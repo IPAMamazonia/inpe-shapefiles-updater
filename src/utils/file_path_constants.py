@@ -7,8 +7,9 @@ SHAPEFILES_DOWNLOAD_PATH = ABS_PATH+'/shapeFiles/'
 def get_zip_file_path():
     print os.listdir(
         SHAPEFILES_DOWNLOAD_PATH)
-    return SHAPEFILES_DOWNLOAD_PATH+'/'+os.listdir(
-        SHAPEFILES_DOWNLOAD_PATH)[0]
+    for shapefile in os.listdir(SHAPEFILES_DOWNLOAD_PATH):
+        if shapefile.endswith(".zip"):
+            return SHAPEFILES_DOWNLOAD_PATH+'/'+shapefile
 
 
 def generate_file_name():
