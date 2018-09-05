@@ -1,6 +1,9 @@
+geckodriver.log
 bin
 include
 lib
 lib64
 *.pyc
 configs.py
+.idea/
+env/
