@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from pyvirtualdisplay import Display
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.keys import Keys
@@ -23,16 +24,16 @@ class Bot:
         ]
 
     def __init__(self):
-        # os.environ['MOZ_HEADLESS'] = '1'
-
+        display = Display(visible=0, size=(800,600))
+        display.start()
+        
         profile = webdriver.FirefoxProfile()
         profile.set_preference('browser.download.folderList', 2) # custom location
         profile.set_preference('browser.download.manager.showWhenStarting', False)
         profile.set_preference('browser.download.dir',
                                SHAPEFILES_DOWNLOAD_PATH)
         profile.set_preference('browser.helperApps.neverAsk.saveToDisk', 'application/zip')
-        self.session = webdriver.Firefox(
-            profile)
+        self.session = webdriver.Firefox(profile)
         
     def routine(self):
         
